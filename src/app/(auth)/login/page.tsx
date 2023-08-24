@@ -12,7 +12,7 @@ const Login = () => {
         <Button
           onClick={async () => {
             await SignIn().then((result) => {
-              if (result?.user?.uid) {
+              if (result?.user?.uid !== null) {
                 saveUser(result);
                 _router.push('/')
               }

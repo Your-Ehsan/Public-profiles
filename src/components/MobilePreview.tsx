@@ -29,7 +29,7 @@ interface PreviewDataProps {
   }[];
   user: string;
 }
-export const locadata = () => JSON.parse(localStorage.getItem('link'))
+export const locadata = () => JSON.parse(localStorage.getItem('links'))
 // function renderItem() {
 //     switch (item.type) {
 //       case "text":

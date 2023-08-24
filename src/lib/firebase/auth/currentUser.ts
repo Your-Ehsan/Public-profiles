@@ -14,7 +14,7 @@ const currentUser = async (): Promise<AuthData> => {
         } else {
           // User is signed out
           resolve({ user: null, uid: null });
-        }
+         }
       },
       (error) => {
         reject(error);

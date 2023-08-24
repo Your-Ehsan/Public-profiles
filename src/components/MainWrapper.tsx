@@ -1,10 +1,10 @@
 "user client";
 
-import { ReactNode, useEffect, useState } from "react";
+// import { ReactNode, useEffect, useState } from "react";
 import Header from "./navigations/Header";
 import { currentUser } from "@/lib/firebase/auth/currentUser";
 import { AuthData } from "@/types";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import MobilePreview from "./MobilePreview";
 import LinksForm from "./forms/LinksForm";
 import { saveUser } from "@/lib/firebase/databases/saveUsers";
@@ -13,27 +13,27 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/init";
 
 const MainWrapper = () => {
-  const [CurrentUser, setCurrentUser] = useState<AuthData>();
+  // const [CurrentUser, setCurrentUser] = useState<AuthData>();
   // const userdata = currentUser()
-  const _router = useRouter();
+  // const _router = useRouter();
   // console.log(userdata);
 
-  const valuesFromFirestore = async (username: string) => {
-    const docRef = doc(db, "profiles", username);
-    // console.log(JSON.stringify(username));
+  // const valuesFromFirestore = async (username: string | null | undefined) => {
+  //   const docRef = doc(db, "profiles", username || '');
+  //   // console.log(JSON.stringify(username));
 
-    // Get a document, forcing the SDK to fetch from the offline cache.
-    try {
-      const doc = await getDoc(docRef);
+  //   // Get a document, forcing the SDK to fetch from the offline cache.
+  //   try {
+  //     const doc = await getDoc(docRef);
 
-      // Document was found in the cache. If no cached document exists,
-      // an error will be returned to the 'catch' block below.
-      // console.log("document data:", doc.data());
-      return doc.data();
-    } catch (e) {
-      console.log("error getting data", e);
-    }
-  };
+  //     // Document was found in the cache. If no cached document exists,
+  //     // an error will be returned to the 'catch' block below.
+  //     // console.log("document data:", doc.data());
+  //     return doc.data();
+  //   } catch (e) {
+  //     console.log("error getting data", e);
+  //   }
+  // };
 
   // useEffect(() => {
   const { data, isLoading, isLoadingError, isSuccess, isFetching } = useQuery({
@@ -45,15 +45,15 @@ const MainWrapper = () => {
   });
   // console.log(data);
 
-  const savedFormValues = useQuery({
-    queryKey: ["formData"],
-    enabled: data?.user.uid !== null || undefined,
-    queryFn: () => valuesFromFirestore(data?.uid),
-    // retryOnMount: false,
-    // retry: false,
-    // initialData: initdata,
-    // refetchInterval: 1500
-  });
+  // const savedFormValues = useQuery({
+  //   queryKey: ["formData"],
+  //   enabled: data?.user !== null,
+  //   queryFn: () => valuesFromFirestore(data?.uid),
+  //   retryOnMount: false,
+  //   retry: false,
+  //   // initialData: initdata,
+  //   // refetchInterval: 1500
+  // });
 
   if (isLoading) return <h1>looading...</h1>;
   if (data?.uid === null) redirect("/login");
@@ -90,7 +90,7 @@ const MainWrapper = () => {
             <div className="flex justify-center w-full p-4 overflow-x-auto">
               <LinksForm
                 userdata={data?.user}
-                savedFormValues={savedFormValues}
+                // savedFormValues={savedFormValues}
                 // currentUserData={data?.user}
               />
               {/* {formComponent} */}

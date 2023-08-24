@@ -39,24 +39,12 @@ import {
 import { db } from "@/lib/firebase/init";
 import { uploadImage } from "@/lib/firebase/upload/uploadImage";
 import { User } from "firebase/auth";
+import { GhostButton } from "../buttons/GhostButton";
+import Link from "next/link";
+import { valuesFromFirestore } from "@/lib/firebase/databases/profileData";
 // import { useLocalStorage } from "@/contexts/LocalStorageContext";
 
-// const valuesFromFirestore = async (username?: string | null) => {
-//   const docRef = doc(db, "profiles", username || "ehsanshahid787@gmail.com");
-//   // console.log(JSON.stringify(username));
 
-//   // Get a document, forcing the SDK to fetch from the offline cache.
-//   try {
-//     const doc = await getDoc(docRef);
-
-//     // Document was found in the cache. If no cached document exists,
-//     // an error will be returned to the 'catch' block below.
-//     // console.log("document data:", doc.data());
-//     return doc.data();
-//   } catch (e) {
-//     console.log("error getting data", e);
-//   }
-// };
 
 // const dataFromFirestore = await valuesFromFirestore();
 
@@ -89,14 +77,23 @@ type ProfileFormValues = z.infer<typeof linkValidation>;
 // const values =async () => {
 
 const LinksForm = ({
-  savedFormValues,
+  // savedFormValues,
   userdata,
 }: {
-  savedFormValues: UseQueryResult<ProfileFormValues>;
+  // savedFormValues: UseQueryResult<ProfileFormValues>;
   userdata: User | undefined;
 }) => {
   // console.log(currentUserData?.email);
 
+  // const savedFormValues = useQuery({
+  //   queryKey: ["formData"],
+  //   enabled: userdata?.uid !== null,
+  //   queryFn: () => valuesFromFirestore(userdata?.uid),
+  //   retryOnMount: false,
+  //   retry: false,
+  //   // initialData: initdata,
+  //   // refetchInterval: 1500
+  // });
   // const savedFormValues: UseQueryResult<
   //   ProfileFormValues | undefined,
   //   unknown
@@ -124,13 +121,15 @@ const LinksForm = ({
   //   // return defaultValues
   // };
   // console.log(savedFormValues.data);
+
+  // if(savedFormValues.data){
   const defaultValues: Partial<ProfileFormValues> = {
     user: {
-      image: savedFormValues?.data?.user.image || "",
-      name: savedFormValues?.data?.user?.name || "",
-      email: savedFormValues?.data?.user?.email || "",
+      image: "",
+      name: "",
+      email: "",
     },
-    links: savedFormValues.data?.links,
+    links: [],
     // [
     //   { link: "https://shadcn.com", provider: "" },
     //   { link: "https://github.com/your-ehsan", provider: "Github" },
@@ -138,10 +137,11 @@ const LinksForm = ({
     // };
     // return defaultValues
   };
+
   const form = useForm<ProfileFormValues>({
-    //@ts-ignore
     resolver: zodResolver(linkValidation),
-    defaultValues: defaultValues,
+    defaultValues: async () =>
+      (await valuesFromFirestore(userdata?.uid)) || defaultValues,
     // {
     //   user: {
     //     image: savedFormValues?.data?.user.image || "",
@@ -160,14 +160,14 @@ const LinksForm = ({
   // /profiles/ehsanshahid787@gmail.com
   const onSubmit = async (Formdata: ProfileFormValues) => {
     const { downloadURL, progress } = await uploadImage(
-      userdata.uid,
+      userdata?.uid,
       files[0],
     );
     console.log(progress);
     console.log(downloadURL);
 
     await setDoc<DocumentData, DocumentData>(
-      doc(db, "profiles", userdata.uid),
+      doc(db, "profiles", userdata?.uid || ""),
       {
         user: {
           email: Formdata?.user?.email,
@@ -236,8 +236,9 @@ const LinksForm = ({
   // console.log(files);
   // console.log(savedFormValues.data);
 
-  if (savedFormValues.isLoading) <h1>Saved Form values loading ....</h1>
-  
+  // if (savedFormValues.isLoading) {
+  // return <h1>Saved Form values loading ...</h1>;
+  // } else {
   return (
     <section className="bg-red-300">
       <Form {...form}>
@@ -397,9 +398,14 @@ const LinksForm = ({
           <Button type="submit">Update profile</Button>
         </form>
       </Form>
+      <Link href={`/${userdata?.uid}`}>
+      <GhostButton text="View Live Profile" />
+      </Link>
     </section>
   );
 };
+// };
+// };
 export default LinksForm;
 /**
 {

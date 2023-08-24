@@ -10,14 +10,14 @@ import { currentUser } from "@/lib/firebase/auth/currentUser";
 import { useRouter } from "next/navigation";
 import { getAuth } from "firebase/auth";
 
-const getdata = async () => {
-  return new Promise((resolve, reject) =>
-    resolve({
-      user: { image: "", name: "", email: "" },
-      links: [{ link: "https://github.com/your-ehsan", provider: "Github" }],
-    }),
-  );
-};
+// const getdata = async () => {
+//   return new Promise((resolve, reject) =>
+//     resolve({
+//       user: { image: "", name: "", email: "" },
+//       links: [{ link: "https://github.com/your-ehsan", provider: "Github" }],
+//     }),
+//   );
+// };
 const Home =  () => {
   // const initdata =  getdata();
   // const userdata = await currentUser();

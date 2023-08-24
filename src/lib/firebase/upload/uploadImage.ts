@@ -11,11 +11,11 @@ import { storage } from "../init";
 import { ImgUploadResult } from "@/types";
 
 const uploadImage = async (
-  username: string,
+  username: string | undefined,
   file: File,
 ): Promise<ImgUploadResult> => {
   // Upload file and metadata to the object 'images/mountains.jpg'
-  const storageRef = ref(storage, `users/${username}/images/${file.name}`);
+  const storageRef = ref(storage, `users/${username || 'error'}/images/${file.name}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
   // Listen for state changes, errors, and completion of the upload.
