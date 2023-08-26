@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { SignIn } from "@/lib/firebase/auth/signIn";
 import { saveUser } from "@/lib/firebase/databases/saveUsers";
 import { AuthData } from "@/types";
+import { User, UserCredential } from "firebase/auth";
 import { redirect, useRouter } from "next/navigation";
 
 const Login = () => {
@@ -11,16 +12,8 @@ const Login = () => {
     <section className="w-screen h-screen flex justify-center items-center">
       <div className="">
         <Button
-          // onClick={async () => {
-          //   await SignIn().then((result) => {
-          //     if (result?.user?.uid !== null) {
-          //       saveUser(result);
-          //       _router.push('/')
-          //     }
-          //   });
-          // }}
           onClick={async () => {
-            const result = await SignIn();
+            const result: any = await SignIn();
             if (result?.user?.uid) {
               await saveUser(result).then(() => _router.push("/"));
             }

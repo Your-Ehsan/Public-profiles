@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Link from "next/link";
 import Image from "next/image";
+import { DocumentData } from "firebase/firestore";
 
 type MobilePreviewBtnProps = {
   icon: ReactNode;
@@ -23,7 +24,11 @@ interface PreviewDataProps {
     link: string;
     provider: string;
   }[];
-  user: string;
+  user: {
+    image: string;
+    name: string;
+    email: string;
+  };
 }
 
 const MobilePreviewBtn = ({
@@ -51,7 +56,7 @@ const MobilePreview = ({
   initdata,
   backgroundStyles,
 }: {
-  initdata: unknown;
+  initdata: PreviewDataProps | DocumentData | undefined;
   backgroundStyles: string;
 }) => {
   return (
@@ -90,31 +95,36 @@ const MobilePreview = ({
               </div>
             </div>
             <div className="grid content-center">
-              {initdata?.links?.map(({ link, provider }, index) => {
-                return (
-                  <span key={index}>
-                    {provider === "Github" ? (
-                      <MobilePreviewBtn
-                        text="Github"
-                        icon={<GitHubLogoIcon className="mx-2" />}
-                        link={link}
-                      />
-                    ) : provider === "Linkedin" ? (
-                      <MobilePreviewBtn
-                        text="Linkedin"
-                        icon={<LinkedInLogoIcon className="mx-2" />}
-                        link={link}
-                      />
-                    ) : provider === "Twitter" ? (
-                      <MobilePreviewBtn
-                        text="Twitter"
-                        icon={<TwitterLogoIcon className="mx-2" />}
-                        link={link}
-                      />
-                    ) : null}
-                  </span>
-                );
-              })}
+              {initdata?.links?.map(
+                (
+                  { link, provider }: { link: string; provider: string },
+                  index: number,
+                ) => {
+                  return (
+                    <span key={index}>
+                      {provider === "Github" ? (
+                        <MobilePreviewBtn
+                          text="Github"
+                          icon={<GitHubLogoIcon className="mx-2" />}
+                          link={link}
+                        />
+                      ) : provider === "Linkedin" ? (
+                        <MobilePreviewBtn
+                          text="Linkedin"
+                          icon={<LinkedInLogoIcon className="mx-2" />}
+                          link={link}
+                        />
+                      ) : provider === "Twitter" ? (
+                        <MobilePreviewBtn
+                          text="Twitter"
+                          icon={<TwitterLogoIcon className="mx-2" />}
+                          link={link}
+                        />
+                      ) : null}
+                    </span>
+                  );
+                },
+              )}
             </div>
           </div>
         </div>

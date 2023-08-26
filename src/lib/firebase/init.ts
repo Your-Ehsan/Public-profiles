@@ -49,8 +49,7 @@ const InitServices = (configs: FirebaseOptions) => {
     storage: FirebaseStorage;
   }) => {
     if (
-      process.env.NODE_ENV !== "production" ||
-      location.hostname === "localhost"
+      process.env.NODE_ENV !== "production"
     ) {
       try {
         connectAuthEmulator(auth, "http://localhost:9099");

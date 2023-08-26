@@ -7,6 +7,7 @@ import MobilePreview from "./MobilePreview";
 import LinksForm from "./forms/LinksForm";
 import { useQuery } from "@tanstack/react-query";
 
+//@ts-ignore
 export const locadata = () => JSON.parse(localStorage.getItem("links"));
 
 const MainWrapper = () => {

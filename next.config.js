@@ -5,6 +5,9 @@ const nextConfig = {
       //   domains: ["lh3.googleusercontent.com"],
       // },
       // },
+      // typescript: {
+      //   ignoreBuildErrors: true,
+      // },
       images: {
         remotePatterns: [
           {

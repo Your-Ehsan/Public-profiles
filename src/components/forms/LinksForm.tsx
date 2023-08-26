@@ -35,7 +35,9 @@ import Image from "next/image";
 
 const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
   const form = useForm<FormValues>({
+      //@ts-ignore
       resolver: zodResolver(linkValidation),
+      //@ts-ignore
       defaultValues: async () =>
         (await valuesFromFirestore(userdata?.uid)) || {
           user: {
@@ -52,8 +54,8 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
       control: form.control,
     }),
     watch = form.watch();
-
-  localStorage.setItem("links", JSON.stringify(watch));
+  const ISSERVER = typeof window === "undefined";
+  if (!ISSERVER) localStorage.setItem("links", JSON.stringify(watch));
 
   return (
     <section className="h-full">
@@ -88,53 +90,56 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
                 <PlusIcon className="mx-2" />
               </Button>
               <div className="">
-
-              {fields.map((field, index) => (
-                <div key={field.id} className="my-8">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="font-semibold text-slate-600 flex">
-                      <ListBulletIcon className="mx-2" />
-                      {`Link #${index + 1}`}
-                    </span>
-                    <span
-                      className="cursor-pointer text-xs flex duration-300 hover:text-destructive/70 font-semibold text-slate-500"
-                      onClick={() => remove(index)}
-                    >
-                      <TrashIcon className="mx-1 font-semibold" />
-                      Remove
-                    </span>
+                {fields.map((field, index) => (
+                  <div key={field.id} className="my-8">
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="font-semibold text-slate-600 flex">
+                        <ListBulletIcon className="mx-2" />
+                        {`Link #${index + 1}`}
+                      </span>
+                      <span
+                        className="cursor-pointer text-xs flex duration-300 hover:text-destructive/70 font-semibold text-slate-500"
+                        onClick={() => remove(index)}
+                      >
+                        <TrashIcon className="mx-1 font-semibold" />
+                        Remove
+                      </span>
+                    </div>
+                    <ComboboxForm
+                      form={form}
+                      name={`links.${index}.provider`}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`links.${index}.link`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className={"text-[.70rem]"}>
+                            URLs
+                          </FormLabel>
+                          <FormDescription className="sr-only">
+                            Add links to your website, blog, or social media
+                            profiles.
+                          </FormDescription>
+                          <FormControl>
+                            <div className="flex items-center peer border-input border rounded-md px-4">
+                              <span>
+                                <Link2Icon className=" text-primary/80 font-semibold" />
+                              </span>
+                              <Input
+                                placeholder="https://github.com/"
+                                className="border-none  focus-visible:ring-0 peer-focus-within:border"
+                                {...field}
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <ComboboxForm form={form} name={`links.${index}.provider`} />
-                  <FormField
-                    control={form.control}
-                    name={`links.${index}.link`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className={"text-[.70rem]"}>URLs</FormLabel>
-                        <FormDescription className="sr-only">
-                          Add links to your website, blog, or social media
-                          profiles.
-                        </FormDescription>
-                        <FormControl>
-                          <div className="flex items-center peer border-input border rounded-md px-4">
-                            <span>
-                              <Link2Icon className=" text-primary/80 font-semibold" />
-                            </span>
-                            <Input
-                              placeholder="https://github.com/"
-                              className="border-none  focus-visible:ring-0 peer-focus-within:border"
-                              {...field}
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              ))}
+                ))}
               </div>
-
             </TabsContent>
             <TabsContent value="profile">
               <div className="w-full my-8">

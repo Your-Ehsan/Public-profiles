@@ -1,13 +1,27 @@
 "use client";
-import MobilePreview from "@/components/MobilePreview";
+// import MobilePreview from "@/components/MobilePreview";
 import PreviewHeader from "@/components/navigations/PreviewHeader";
+import { localStorageData } from "@/constants";
 
+import dynamic from "next/dynamic";
+
+const DynamicMobilePreview = dynamic(
+  () => import("@/components/MobilePreview"),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>,
+  },
+);
 const Preview = () => {
-  const data = localStorage.getItem("links");
+  // const data = localStorage.getItem("links");
   return (
     <section>
       <PreviewHeader />
-      <MobilePreview initdata={JSON.parse(data)} backgroundStyles="" />
+      <DynamicMobilePreview
+        // @ts-ignore
+        initdata={JSON.parse(localStorageData)}
+        backgroundStyles=""
+      />
     </section>
   );
 };
