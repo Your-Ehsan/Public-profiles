@@ -29,7 +29,7 @@ const Header = ({ userdata }: { userdata: User | undefined }) => {
           </Link>
 
           <Image
-            onClick={SignIn}
+            // onClick={SignIn}
             src={userdata?.photoURL || "/vercel.svg"}
             width={80}
             height={80}
