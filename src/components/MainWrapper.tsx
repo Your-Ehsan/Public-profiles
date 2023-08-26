@@ -6,9 +6,8 @@ import { redirect } from "next/navigation";
 import MobilePreview from "./MobilePreview";
 import LinksForm from "./forms/LinksForm";
 import { useQuery } from "@tanstack/react-query";
+import { localdata } from "@/constants";
 
-//@ts-ignore
-export const locadata = () => JSON.parse(localStorage.getItem("links"));
 
 const MainWrapper = () => {
   const { data, isLoading } = useQuery({
@@ -18,7 +17,7 @@ const MainWrapper = () => {
   });
   const initdata = useQuery({
     queryKey: ["links"],
-    queryFn: locadata,
+    queryFn: localdata,
     // initialData: initdata,
     refetchInterval: 1500,
   });
