@@ -8,9 +8,8 @@ import {
 import { ReactNode } from "react";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import Link from "next/link";
-import Image from "next/image";
 import { DocumentData } from "firebase/firestore";
+import Image from "next/image";
 
 type MobilePreviewBtnProps = {
   icon: ReactNode;
@@ -38,7 +37,7 @@ const MobilePreviewBtn = ({
   link,
 }: MobilePreviewBtnProps) => {
   return (
-    <Link href={link} rel="noreferrer noopener" className="grid mx-3 my-1">
+    <a href={link} rel="noreferrer noopener" className="grid mx-3 my-1">
       <Button className={`${color} flex justify-between`}>
         <span className="flex items-center mx-2">
           {icon}
@@ -48,7 +47,7 @@ const MobilePreviewBtn = ({
           <ArrowRightIcon />
         </span>
       </Button>
-    </Link>
+    </a>
   );
 };
 

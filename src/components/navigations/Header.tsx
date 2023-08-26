@@ -16,7 +16,7 @@ const Header = ({ userdata }: { userdata: User | undefined }) => {
           <span className="ml-3 text-xl">Profiles</span>
         </Link>
         <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center"></nav>
-        <div className="flex">
+        <div className="flex items-center">
           <Link href={"/preview"}>
             <Button variant="outline" className="mx-4">
               <span className="max-md:hidden font-semibold text-slate-600">
@@ -35,7 +35,7 @@ const Header = ({ userdata }: { userdata: User | undefined }) => {
             height={80}
             alt={`${userdata?.displayName}-avatar`}
             title={`${userdata?.displayName}-avatar`}
-            className="p-1 rounded-full border border-primary/60"
+            className="p-1 rounded-full border border-primary/60 w-12"
           />
         </div>
       </div>

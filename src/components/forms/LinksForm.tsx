@@ -54,8 +54,9 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
       control: form.control,
     }),
     watch = form.watch();
-  const ISSERVER = typeof window === "undefined";
-  if (!ISSERVER) localStorage.setItem("links", JSON.stringify(watch));
+  // const ISSERVER = typeof window === "";
+  // if (!ISSERVER) 
+  localStorage.setItem("links", JSON.stringify(watch));
 
   return (
     <section className="h-full">
