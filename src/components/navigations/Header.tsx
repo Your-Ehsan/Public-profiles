@@ -1,39 +1,42 @@
-
 import Link from "next/link";
-import { Button } from "../ui/button";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 import { SignIn } from "@/lib/firebase/auth/signIn";
-import { currentUser } from "@/lib/firebase/auth/currentUser";
-import { useState } from "react";
-import { AuthData } from "@/types";
 import { User } from "firebase/auth";
+import { EyeOpenIcon } from "@radix-ui/react-icons";
 
-const Header = ({userdata}:{userdata: User | undefined}) => {
-  
+const Header = ({ userdata }: { userdata: User | undefined }) => {
   return (
-    <header className="text-gray-400 bg-gray-900 body-font fixed top-0 w-screen">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-        <a className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
-          <span className="ml-3 text-xl">Tailblocks</span>
-        </a>
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-          {/* <ButtonWithIcon classes="mx-2" text="Links" /> */}
-          {/* <ButtonWithIcon classes="mx-2" text="Profile Details" /> */}
-        </nav>
-        <div className="">
+    <header className="bg-background shadow-lg body-font fixed top-0 w-screen">
+      <div className="container mx-auto flex p-5 items-center justify-between">
+        <Link
+          href={"/"}
+          className="flex title-font font-medium items-center md:mb-0"
+        >
+          <span className="ml-3 text-xl">Profiles</span>
+        </Link>
+        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center"></nav>
+        <div className="flex">
+          <Link href={"/preview"}>
+            <Button variant="outline" className="mx-4">
+              <span className="max-md:hidden font-semibold text-slate-600">
+                Preview
+              </span>
+              <span className="mx-1 md:hidden">
+                <EyeOpenIcon className="font-semibold text-primary/60" />
+              </span>
+            </Button>
+          </Link>
+
           <Image
-          onClick={SignIn}
-            src={
-              userdata?.photoURL || "/vercel.svg"
-            }
+            onClick={SignIn}
+            src={userdata?.photoURL || "/vercel.svg"}
             width={80}
             height={80}
-            alt="avatar img"
+            alt={`${userdata?.displayName}-avatar`}
+            title={`${userdata?.displayName}-avatar`}
+            className="p-1 rounded-full border border-primary/60"
           />
-          <Link href={"/preview"}>
-            <Button variant="outline">Preview</Button>
-          </Link>
         </div>
       </div>
     </header>

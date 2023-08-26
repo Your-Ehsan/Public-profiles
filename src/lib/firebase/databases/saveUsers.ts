@@ -6,12 +6,18 @@ const saveUser = async ({ user }: AuthData) => {
   try {
     //   TODO: fix this type error
     // @ts-ignore
-    await setDoc(doc(db, "users", user?.email), {
-      email: user?.email,
-      image: user?.photoURL,
-      name: user?.displayName,
-      uid: user?.uid,
-    });
+    await setDoc<DocumentData, DocumentData>(
+      doc(db, "profiles", user?.uid || ""),
+      {
+        user: {
+          email: user?.email,
+          name: user?.displayName,
+          image: user?.photoURL,
+        },
+        links: [{ link: "", provider: "" }],
+      },
+      { merge: true },
+    );
   } catch (error) {
     console.log(error);
     return error;
@@ -19,7 +25,16 @@ const saveUser = async ({ user }: AuthData) => {
 };
 
 export { saveUser };
-
+/**
+{
+        user: {
+          email: Formdata?.user?.email,
+          name: Formdata?.user.name,
+        },
+        links: Formdata?.links,
+      },
+      { merge: true }, 
+ */
 /**
  const currentUser = async (): Promise<AuthData> => {
   return new Promise<AuthData>((resolve, reject) => {

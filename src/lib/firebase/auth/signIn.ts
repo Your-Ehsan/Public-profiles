@@ -1,12 +1,12 @@
-const provider = new GoogleAuthProvider();
-import {  signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {  signInWithPopup, GoogleAuthProvider, User, UserCredential } from "firebase/auth";
 import { auth } from "../init";
+const provider = new GoogleAuthProvider();
 
 
 
-const SignIn = async () => {
+const SignIn: () => Promise<unknown> = async () => {
   try {
-    return await signInWithPopup(auth, provider);
+    return await signInWithPopup(auth, provider)
   } catch (error) {
     console.log(error);
     return error;

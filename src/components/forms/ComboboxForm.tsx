@@ -1,5 +1,11 @@
 "use client";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import {
+  CaretSortIcon,
+  CheckIcon,
+  GitHubLogoIcon,
+  LinkedInLogoIcon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
 import { UseFormReturn, useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -28,16 +34,28 @@ import {
 } from "@/components/ui/popover";
 // import { toast } from "@/components/ui/use-toast";
 
-const languages = [
+const Platforms = [
   // { label: "English", value: "English" },
   // { label: "French", value: "French" },
   // { label: "German", value: "German" },
   // { label: "Spanish", value: "Spanish" },
   // { label: "Portuguese", value: "Portuguese" },
   // { label: "Russian", value: "Russian" },
-  { label: "Twitter", value: "Twitter" },
-  { label: "Linkedin", value: "Linkedin" },
-  { label: "Github", value: "Github" },
+  {
+    label: "Twitter",
+    value: "Twitter",
+    icon: <TwitterLogoIcon className=" mr-2 text-primary/80 text-semibold" />,
+  },
+  {
+    label: "Linkedin",
+    value: "Linkedin",
+    icon: <LinkedInLogoIcon className="mr-2 text-primary/80 text-semibold" />,
+  },
+  {
+    label: "Github",
+    value: "Github",
+    icon: <GitHubLogoIcon className="mr-2 text-primary/80 text-semibold" />,
+  },
 ] as const;
 
 // const FormSchema = z.object({
@@ -89,8 +107,8 @@ export function ComboboxForm({ form, name }: Props) {
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
-          <FormLabel>Language</FormLabel>
+        <FormItem className="flex flex-col my-4">
+          <FormLabel className="text-[.70rem]">Platform</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -98,40 +116,49 @@ export function ComboboxForm({ form, name }: Props) {
                   variant="outline"
                   role="combobox"
                   className={cn(
-                    "w-[200px] justify-between",
+                    "w-full justify-between",
                     !field.value && "text-muted-foreground",
                   )}
                 >
-                  {field.value
-                    ? languages.find(
-                        (language) => language.value === field.value,
-                      )?.label
-                    : "Select language"}
-                  <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <span className="flex items-center">
+                    {field.value &&
+                      Platforms.find(
+                        (platform) => platform.value === field.value,
+                      )?.icon}
+
+                    {field.value
+                      ? Platforms.find(
+                          (platform) => platform.value === field.value,
+                        )?.label
+                      : "Select Plateform"}
+                  </span>
+
+                  <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 text-primary/80" />
                 </Button>
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
               <Command>
                 <CommandInput
-                  placeholder="Search framework..."
+                  placeholder="Search Plateform..."
                   className="h-9"
                 />
-                <CommandEmpty>No framework found.</CommandEmpty>
+                <CommandEmpty>Not Found ¯\_(ツ)_/¯ </CommandEmpty>
                 <CommandGroup>
-                  {languages.map((language) => (
+                  {Platforms.map((platform) => (
                     <CommandItem
-                      value={language.label}
-                      key={language.value}
+                      value={platform.label}
+                      key={platform.value}
                       onSelect={() => {
-                        form.setValue(name, language.value);
+                        form.setValue(name, platform.value);
                       }}
                     >
-                      {language.label}
+                      {platform.icon}
+                      {platform.label}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
-                          language.value === field.value
+                          platform.value === field.value
                             ? "opacity-100"
                             : "opacity-0",
                         )}
@@ -142,8 +169,8 @@ export function ComboboxForm({ form, name }: Props) {
               </Command>
             </PopoverContent>
           </Popover>
-          <FormDescription>
-            This is the language that will be used in the dashboard.
+          <FormDescription className="sr-only">
+            This is the Platform that will be used in the public profile.
           </FormDescription>
           <FormMessage />
         </FormItem>

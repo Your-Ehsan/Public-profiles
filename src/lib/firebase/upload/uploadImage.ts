@@ -11,13 +11,14 @@ import { storage } from "../init";
 import { ImgUploadResult } from "@/types";
 
 const uploadImage = async (
-  username: string | undefined,
+  username: string | null|undefined,
   file: File,
 ): Promise<ImgUploadResult> => {
   // Upload file and metadata to the object 'images/mountains.jpg'
+  if(!file) return {downloadURL: null, progress:null}
   const storageRef = ref(storage, `users/${username || 'error'}/images/${file.name}`);
-  const uploadTask = uploadBytesResumable(storageRef, file);
 
+  const uploadTask = uploadBytesResumable(storageRef, file);
   // Listen for state changes, errors, and completion of the upload.
   //   try {
   return new Promise<ImgUploadResult>((resolve, reject) => {
@@ -49,7 +50,7 @@ const uploadImage = async (
             // resolve({ progress: progress, downloadURL: null });
           } catch (error) {
             console.log("error while getting progress", error);
-            reject({ progress: null, downloadURL: null });
+            // reject({ progress: null, downloadURL: null });
           }
         },
         (error: StorageError) => {
