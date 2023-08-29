@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { SignIn } from "@/lib/firebase/auth/signIn";
 import { User } from "firebase/auth";
 import { EyeOpenIcon } from "@radix-ui/react-icons";
 
@@ -29,7 +28,6 @@ const Header = ({ userdata }: { userdata: User | undefined }) => {
           </Link>
 
           <Image
-            // onClick={SignIn}
             src={userdata?.photoURL || "/vercel.svg"}
             width={80}
             height={80}

@@ -2,9 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { SignIn } from "@/lib/firebase/auth/signIn";
 import { saveUser } from "@/lib/firebase/databases/saveUsers";
-import { AuthData } from "@/types";
-import { User, UserCredential } from "firebase/auth";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const _router = useRouter();

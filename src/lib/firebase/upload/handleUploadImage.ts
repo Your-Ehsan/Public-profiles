@@ -23,7 +23,6 @@ const handleUploadImage = async (
         };
 
         fileReader.readAsDataURL(file);
-        // setFiles(Array.from(e.target.files));
         const { downloadURL, progress } = await uploadImage(
           userdata?.email,
           Array.from(e.target.files)[0],

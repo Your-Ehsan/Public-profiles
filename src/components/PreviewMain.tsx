@@ -9,8 +9,6 @@ const PreviewMain = () => {
   const initdata = useQuery({
     queryKey: ["Previewlinks"],
     queryFn: localdata,
-    // initialData: initdata,
-    // refetchInterval: 1500,
   });
   return (
     <>

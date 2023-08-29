@@ -6,8 +6,7 @@ import {
   LinkedInLogoIcon,
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
-import { UseFormReturn, useForm } from "react-hook-form";
-import * as z from "zod";
+import { UseFormReturn } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,6 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import {
-  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -32,15 +30,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-// import { toast } from "@/components/ui/use-toast";
 
 const Platforms = [
-  // { label: "English", value: "English" },
-  // { label: "French", value: "French" },
-  // { label: "German", value: "German" },
-  // { label: "Spanish", value: "Spanish" },
-  // { label: "Portuguese", value: "Portuguese" },
-  // { label: "Russian", value: "Russian" },
   {
     label: "Twitter",
     value: "Twitter",
@@ -57,12 +48,6 @@ const Platforms = [
     icon: <GitHubLogoIcon className="mr-2 text-primary/80 text-semibold" />,
   },
 ] as const;
-
-// const FormSchema = z.object({
-//   language: z.string({
-//     required_error: "Please select a language.",
-//   }),
-// });
 
 type Props = {
   form: UseFormReturn<
@@ -84,24 +69,6 @@ type Props = {
 };
 
 export function ComboboxForm({ form, name }: Props) {
-  //   const form = useForm<z.infer<typeof FormSchema>>({
-  //     // @ts-ignore
-  //     resolver: zodResolver(FormSchema),defaultValues:{
-  //         language: ""
-  //     }
-  //   });
-
-  //   function onSubmit(data: z.infer<typeof FormSchema>) {
-  //     toast({
-  //       title: "You submitted the following values:",
-  //       description: (
-  //         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-  //           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-  //         </pre>
-  //       ),
-  //     });
-  //   }
-
   return (
     <FormField
       control={form.control}

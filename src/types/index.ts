@@ -13,13 +13,3 @@ export interface ImgUploadResult {
 }
 
 export type FormValues = z.infer<typeof linkValidation>
-
-// export interface linkValidationInterface {
-//   form: UseFormReturn<{
-//     links: {
-//         link: string;
-//         provider: string;
-//     }[];
-//     user?: string | undefined;
-// }, any, undefined>
-// }

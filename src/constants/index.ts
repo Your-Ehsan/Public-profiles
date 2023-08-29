@@ -1,9 +1,7 @@
-// const ISSERVER = typeof window === "undefined";
-// if (!ISSERVER) localStorage.setItem(key, value);
-// const localStorageData = localStorage.getItem('links')
+export const localdata = () => JSON.parse(localStorage.getItem("links")!);
 
-//@ts-ignore
- const localdata = () => JSON.parse(localStorage.getItem("links"));
-
-
-export {localdata}
+export const siteconfigs = {
+  title: "Public Profiles",
+  description: "Share your personality to the world",
+  createdBy: "your-ehsan",
+};

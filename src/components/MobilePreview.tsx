@@ -18,7 +18,7 @@ type MobilePreviewBtnProps = {
   link: string;
 };
 
-interface PreviewDataProps {
+type PreviewDataProps = {
   links: {
     link: string;
     provider: string;
@@ -28,7 +28,37 @@ interface PreviewDataProps {
     name: string;
     email: string;
   };
-}
+};
+type MobilePreviewBtnsProp = {
+  link: string;
+  provider: string;
+};
+
+const MobilePreviewBtns = ({ provider, link }: MobilePreviewBtnsProp) => {
+  return (
+    <>
+      {provider === "Github" ? (
+        <MobilePreviewBtn
+          text="Github"
+          icon={<GitHubLogoIcon className="mx-2" />}
+          link={link}
+        />
+      ) : provider === "Linkedin" ? (
+        <MobilePreviewBtn
+          text="Linkedin"
+          icon={<LinkedInLogoIcon className="mx-2" />}
+          link={link}
+        />
+      ) : provider === "Twitter" ? (
+        <MobilePreviewBtn
+          text="Twitter"
+          icon={<TwitterLogoIcon className="mx-2" />}
+          link={link}
+        />
+      ) : null}
+    </>
+  );
+};
 
 const MobilePreviewBtn = ({
   icon,
@@ -88,39 +118,17 @@ const MobilePreview = ({
                 <span className="font-mono text-center text-sm ">
                   {initdata?.user?.email}
                 </span>
-                {/* <span>
-                  @
-                </span> */}
               </div>
             </div>
             <div className="grid content-center">
               {initdata?.links?.map(
-                (
-                  { link, provider }: { link: string; provider: string },
-                  index: number,
-                ) => {
+                ({ link, provider }: MobilePreviewBtnsProp, index: number) => {
                   return (
-                    <span key={index}>
-                      {provider === "Github" ? (
-                        <MobilePreviewBtn
-                          text="Github"
-                          icon={<GitHubLogoIcon className="mx-2" />}
-                          link={link}
-                        />
-                      ) : provider === "Linkedin" ? (
-                        <MobilePreviewBtn
-                          text="Linkedin"
-                          icon={<LinkedInLogoIcon className="mx-2" />}
-                          link={link}
-                        />
-                      ) : provider === "Twitter" ? (
-                        <MobilePreviewBtn
-                          text="Twitter"
-                          icon={<TwitterLogoIcon className="mx-2" />}
-                          link={link}
-                        />
-                      ) : null}
-                    </span>
+                    <MobilePreviewBtns
+                      key={index}
+                      link={link}
+                      provider={provider}
+                    />
                   );
                 },
               )}

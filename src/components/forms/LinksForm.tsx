@@ -1,7 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import {
+  Control,
+  FieldValues,
+  UseFormReturn,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 
 import {
   Form,
@@ -19,7 +25,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { User } from "firebase/auth";
 import { valuesFromFirestore } from "@/lib/firebase/databases/profileData";
 import { linkValidation } from "@/lib/validations/linkValidation";
-import Link from "next/link";
 import { FormValues } from "@/types";
 import { linksSubmit } from "@/lib/actions/linksSubmit";
 import { handleUploadImage } from "@/lib/firebase/upload/handleUploadImage";
@@ -32,6 +37,84 @@ import {
   TrashIcon,
 } from "@radix-ui/react-icons";
 import Image from "next/image";
+import Link from "next/link";
+import { ReactNode } from "react";
+
+const FormHeading = ({
+  heading,
+  description,
+}: {
+  heading: string;
+  description: string;
+}) => {
+  return (
+    <div className="w-full my-8">
+      <h2 className="text-3xl">{heading}</h2>
+      <p className="text-xs leading-relaxed text-slate-500 ml-4">
+        {description}
+      </p>
+    </div>
+  );
+};
+type FormLinksProps = {
+  formControl: UseFormReturn<
+    {
+      links: { link: string; provider: string }[];
+      user: { image: string; name: string; email: string };
+    },
+    any,
+    undefined
+  >;
+  formName:
+    | "links"
+    | "user"
+    | `links.${number}`
+    | `links.${number}.link`
+    | `links.${number}.provider`
+    | "user.image"
+    | "user.name"
+    | "user.email";
+  formLabel: string;
+  formDescription: string;
+  formIcon: ReactNode;
+  formPlaceholder: string;
+};
+
+const FormLinks = ({
+  formControl,
+  formName,
+  formLabel,
+  formDescription,
+  formIcon,
+  formPlaceholder,
+}: FormLinksProps) => {
+  return (
+    <FormField
+      control={formControl.control}
+      name={formName}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className={"text-[.70rem]"}>{formLabel}</FormLabel>
+          <FormDescription className="sr-only">
+            {formDescription}
+          </FormDescription>
+          <FormControl>
+            <div className="flex items-center peer border-input border rounded-md px-4">
+              <span>{formIcon}</span>
+              {/* @ts-ignore */}
+              <Input
+                placeholder={formPlaceholder}
+                className="border-none  focus-visible:ring-0 peer-focus-within:border"
+                {...field}
+              />
+            </div>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
 
 const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
   const form = useForm<FormValues>({
@@ -54,8 +137,6 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
       control: form.control,
     }),
     watch = form.watch();
-  // const ISSERVER = typeof window === "";
-  // if (!ISSERVER) 
   localStorage.setItem("links", JSON.stringify(watch));
 
   return (
@@ -73,13 +154,12 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
               <TabsTrigger value="profile">profile</TabsTrigger>
             </TabsList>
             <TabsContent value="links">
-              <div className="w-full my-8">
-                <h2 className="text-3xl">Customize your links</h2>
-                <p className="text-xs leading-relaxed text-slate-500 ml-4">
-                  Add/edit/remove links below and then share all your profiles
-                  with the world
-                </p>
-              </div>
+              <FormHeading
+                heading="Customize your links"
+                description={
+                  "Add/edit/remove links below and then share all your profiles with the world"
+                }
+              />
               <Button
                 type="button"
                 variant="outline"
@@ -110,7 +190,19 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
                       form={form}
                       name={`links.${index}.provider`}
                     />
-                    <FormField
+                    <FormLinks
+                      formControl={form}
+                      formDescription={
+                        "Add links to your website, blog, or social media profiles."
+                      }
+                      formIcon={
+                        <Link2Icon className=" text-primary/80 font-semibold" />
+                      }
+                      formLabel="URLs"
+                      formName={`links.${index}.link`}
+                      formPlaceholder={"https://github.com/"}
+                    />
+                    {/* <FormField
                       control={form.control}
                       name={`links.${index}.link`}
                       render={({ field }) => (
@@ -137,18 +229,22 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
                           <FormMessage />
                         </FormItem>
                       )}
-                    />
+                    /> */}
                   </div>
                 ))}
               </div>
             </TabsContent>
             <TabsContent value="profile">
-              <div className="w-full my-8">
-                <h2 className="text-3xl">Profile Details</h2>
+              <FormHeading
+                heading="Profile Details"
+                description="Add your details to create a personal touch to your profile"
+              />
+              {/* <div className="w-full my-8">
+                <h2 className="text-3xl"></h2>
                 <p className="text-xs leading-relaxed text-slate-500 ml-4">
-                  Add your details to create a personal touch to your profile
+                  
                 </p>
-              </div>
+              </div> */}
               {/* <div className="w-full">
                 <h2></h2>
                 <p>
@@ -208,7 +304,19 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
                 )}
               />
               <div className="my-8">
-                <FormField
+                <FormLinks
+                  formControl={form}
+                  formDescription={
+                    "Add links to your website, blog, or social media profiles."
+                  }
+                  formIcon={
+                    <PersonIcon className=" text-primary/80 font-semibold" />
+                  }
+                  formLabel="Name"
+                  formName={`user.name`}
+                  formPlaceholder={"Your name"}
+                />
+                {/* <FormField
                   control={form.control}
                   name={`user.name`}
                   render={({ field }) => (
@@ -233,8 +341,20 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
                       <FormMessage />
                     </FormItem>
                   )}
+                /> */}
+                <FormLinks
+                  formControl={form}
+                  formDescription={
+                    "Add links to your website, blog, or social media profiles."
+                  }
+                  formIcon={
+                    <EnvelopeClosedIcon className=" text-primary/80 font-semibold" />
+                  }
+                  formLabel="Email"
+                  formName={`user.email`}
+                  formPlaceholder={"Your email"}
                 />
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name={`user.email`}
                   render={({ field }) => (
@@ -259,7 +379,7 @@ const LinksForm = ({ userdata }: { userdata: User | undefined }) => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
               </div>
             </TabsContent>
           </Tabs>

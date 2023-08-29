@@ -1,5 +1,5 @@
-import {  signInWithPopup, GoogleAuthProvider, User, UserCredential } from "firebase/auth";
 import { auth } from "../init";
+import {  signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 const provider = new GoogleAuthProvider();
 
 

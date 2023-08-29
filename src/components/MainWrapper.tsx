@@ -3,10 +3,10 @@
 import Header from "./navigations/Header";
 import { currentUser } from "@/lib/firebase/auth/currentUser";
 import { redirect } from "next/navigation";
-import MobilePreview from "./MobilePreview";
-import LinksForm from "./forms/LinksForm";
-import { useQuery } from "@tanstack/react-query";
 import { localdata } from "@/constants";
+import { useQuery } from "@tanstack/react-query";
+import LinksForm from "./forms/LinksForm";
+import MobilePreview from "./MobilePreview";
 
 
 const MainWrapper = () => {
@@ -18,7 +18,6 @@ const MainWrapper = () => {
   const initdata = useQuery({
     queryKey: ["links"],
     queryFn: localdata,
-    // initialData: initdata,
     refetchInterval: 1500,
   });
 
